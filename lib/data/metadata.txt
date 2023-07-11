@@ -1,0 +1,7 @@
+
+banner add
+app id 
+ca-app-pub-4704922002205833~7005185331
+
+unit add id 
+ca-app-pub-4704922002205833/9176053103

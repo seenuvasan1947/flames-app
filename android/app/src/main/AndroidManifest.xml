@@ -1,5 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.flames">
+    <uses-permission android:name="com.android.vending.BILLING.v6" />
+    
+    <!-- <uses-permission android:name="com.google.android.play.billingclient.version" /> -->
+    <uses-permission android:name="com.google.android.play.billingclient.v6" />
    <application
         android:label="flames"
         android:name="${applicationName}"
@@ -30,5 +34,9 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
+        <!-- <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-4704922002205833~7005185331"/>     -->
     </application>
 </manifest>
