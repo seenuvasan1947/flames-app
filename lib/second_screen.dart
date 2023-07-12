@@ -1,8 +1,13 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+
+import 'sample.dart';
 // void main() {
 //   runApp(MyApp());
 // }
@@ -142,11 +147,19 @@ check_valid();
         setState(() {
           _isPurchased = true;
         });
+        check_valid();
+        if(_isPurchased==true){
+          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>  HomePage()));
+        }
       } catch (e) {
         // Handle Firestore update error
       }
     }
 }
+
 
 Future<void> check_valid() async{
    final userDoc = await _firestore.collection('users').doc('user_id').get();
@@ -191,11 +204,74 @@ setState(() {
     }
   }
 
+ void reloadApp() {
+    // Restart the Flutter app.
+    // This will reload the app with the latest changes.
+    SystemNavigator.pop();
+    
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Google Play Subscription Demo'),
+      ),
+      drawer: Drawer(
+        child: ListTile(
+                        title: const Text('move'),
+                        onTap: () {
+                        heisvalid==true?  Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const MyWidget())):showDialog(context: context, builder: (BuildContext context){
+                                        return RefreshIndicator(
+                                          onRefresh: check_valid,
+                                          child: SingleChildScrollView(
+                                            child: AlertDialog(
+                                              actions: [
+                                         IconButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              icon: const Icon(Icons.close))
+                                                                              ],
+                                                                              title: const Text('subscription Details'),
+                                                                              content: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                        'Available Subscriptions:',
+                                                        style: TextStyle(fontSize: 20),
+                                                      ),
+                                                      SizedBox(height: 10),
+                                                      if (_products.isNotEmpty)
+                                                        Column(
+                                                          children: _products.map((product) {
+                                                            return ListTile(
+                                                              title: Text(product.title),
+                                                              subtitle: Text(product.description),
+                                                              
+                                                              trailing: ElevatedButton(
+                                                                onPressed: _isPurchased ? null : _buySubscription,
+                                                                child: Text(_isPurchased ? 'Purchased' : 'Buy'),
+                                                              ),
+                                                            );
+                                                          }).toList(),
+                                                        ),
+                                                        ElevatedButton(onPressed: check_valid, child: Text('press')),
+                                                        heisvalid==true?Text('valid'):Text('Not valid'),
+                                              ],
+                                                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      });
+                        },
+                      ),
       ),
       body: RefreshIndicator(
         onRefresh: check_valid,
