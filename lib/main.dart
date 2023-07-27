@@ -646,6 +646,7 @@ class _MyAppState extends State<_MyApp> {
     // IMPORTANT!! Always verify purchase details before delivering the product.
     if (purchaseDetails.productID == _kConsumableId) {
       await ConsumableStore.save(purchaseDetails.purchaseID!);
+      
       final List<String> consumables = await ConsumableStore.load();
       setState(() {
         _purchasePending = false;

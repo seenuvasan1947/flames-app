@@ -39,6 +39,7 @@ dependencies:
   in_app_purchase_android: ^0.3.0+8
   shared_preferences: ^2.2.0
   cloud_firestore: ^4.8.2
+  fluttertoast: ^8.2.2
   # google_mobile_ads: ^3.0.0
 
 dev_dependencies:
